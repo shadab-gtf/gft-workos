@@ -6,8 +6,8 @@ import { Card, CardHeader } from "@/src/components/ui/card";
 import { StatsGrid } from "@/src/components/ui/stats-grid";
 import { ProjectList } from "@/src/components/ui/project-list";
 import { KanbanBoard } from "@/src/components/ui/kanban-board";
-import { useAuthStore, useProjectStore, useTeamStore, useEmployeeStore, useTaskStore } from "@/src/store";
-import { activity, analytics, dashboardStats } from "@/src/mock-data/analytics";
+import { useAuthStore, useProjectStore, useTeamStore, useEmployeeStore, useTaskStore, useActivityStore } from "@/src/store";
+import { analytics, dashboardStats } from "@/src/mock-data/analytics";
 import { EmptyState } from "@/src/components/ui/empty-state";
 
 export function DashboardSection() {
@@ -16,6 +16,7 @@ export function DashboardSection() {
   const allTeams = useTeamStore((s) => s.getAllTeams());
   const allUsers = useEmployeeStore((s) => s.getAllUsers());
   const allTasks = useTaskStore((s) => s.getAllTasks());
+  const activities = useActivityStore((s) => s.activities);
 
   if (!currentUser) return null;
 
@@ -32,7 +33,7 @@ export function DashboardSection() {
           </Card>
           <Card>
             <CardHeader title="Recent Activity" />
-            <ActivityTimeline activity={activity} users={allUsers} />
+            <ActivityTimeline activity={activities} users={allUsers} />
           </Card>
         </div>
         <Card>
@@ -57,7 +58,7 @@ export function DashboardSection() {
           </Card>
           <Card>
             <CardHeader title="Team Activity" />
-            <ActivityTimeline activity={activity.slice(0, 4)} users={allUsers} />
+            <ActivityTimeline activity={activities.slice(0, 4)} users={allUsers} />
           </Card>
         </div>
         <Card>

@@ -71,6 +71,7 @@ export interface Activity {
   action: string;
   subject: string;
   timestamp: string;
+  projectId?: string;
 }
 
 export interface Notification {

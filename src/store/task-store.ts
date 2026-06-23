@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import type { Task, TaskStatus } from "@/src/types";
+import { useAuthStore } from "./auth-store";
+import { useActivityStore } from "./activity-store";
 
 interface TaskState {
   tasks: Map<string, Task>;
@@ -35,6 +37,20 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     set((state) => {
       const existing = state.tasks.get(id);
       if (!existing) return state;
+
+      // Log activity if task is marked completed
+      if (updates.status === "completed" && existing.status !== "completed") {
+        const currentUser = useAuthStore.getState().currentUser;
+        if (currentUser) {
+          useActivityStore.getState().addActivity({
+            actorId: currentUser.id,
+            action: "completed task",
+            subject: existing.title,
+            projectId: existing.projectId,
+          });
+        }
+      }
+
       const next = new Map(state.tasks);
       next.set(id, { ...existing, ...updates });
       return { tasks: next, tasksList: Array.from(next.values()) };
@@ -51,6 +67,20 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     set((state) => {
       const task = state.tasks.get(taskId);
       if (!task || task.status === newStatus) return state;
+
+      // Log activity if task is marked completed
+      if (newStatus === "completed") {
+        const currentUser = useAuthStore.getState().currentUser;
+        if (currentUser) {
+          useActivityStore.getState().addActivity({
+            actorId: currentUser.id,
+            action: "completed task",
+            subject: task.title,
+            projectId: task.projectId,
+          });
+        }
+      }
+
       const next = new Map(state.tasks);
       next.set(taskId, { ...task, status: newStatus });
       return { tasks: next, tasksList: Array.from(next.values()) };

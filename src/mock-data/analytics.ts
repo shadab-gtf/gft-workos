@@ -8,12 +8,113 @@ export const dashboardStats: Stat[] = [
 ];
 
 export const activity: Activity[] = [
+  // --- Project: Design System v2 (p-design-system) ---
+  // To showcase >10 activities: 12 activities, sorted newest first
+  {
+    id: "ds-12",
+    actorId: "u-manager-3",
+    action: "assigned",
+    subject: "Accessible focus indicators to Kabir Verma",
+    timestamp: "2026-06-22T11:00:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-11",
+    actorId: "u-employee-6",
+    action: "completed task",
+    subject: "Build glassmorphism card variants",
+    timestamp: "2026-06-20T09:42:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-10",
+    actorId: "u-employee-6",
+    action: "commented on",
+    subject: "Build glassmorphism card variants",
+    timestamp: "2026-06-16T16:45:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-9",
+    actorId: "u-employee-2",
+    action: "commented on",
+    subject: "Create color token documentation",
+    timestamp: "2026-06-15T14:22:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-8",
+    actorId: "u-employee-6",
+    action: "started task",
+    subject: "Build glassmorphism card variants",
+    timestamp: "2026-06-14T09:15:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-7",
+    actorId: "u-employee-2",
+    action: "started task",
+    subject: "Create color token documentation",
+    timestamp: "2026-06-13T10:30:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-6",
+    actorId: "u-manager-3",
+    action: "assigned",
+    subject: "Build glassmorphism card variants to Meera Iyer",
+    timestamp: "2026-06-12T09:05:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-5",
+    actorId: "u-manager-3",
+    action: "assigned",
+    subject: "Create color token documentation to Sara Khan",
+    timestamp: "2026-06-12T09:00:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-4",
+    actorId: "u-manager-3",
+    action: "created task",
+    subject: "Accessible focus indicators",
+    timestamp: "2026-06-11T11:10:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-3",
+    actorId: "u-manager-3",
+    action: "created task",
+    subject: "Build glassmorphism card variants",
+    timestamp: "2026-06-11T11:05:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-2",
+    actorId: "u-manager-3",
+    action: "created task",
+    subject: "Create color token documentation",
+    timestamp: "2026-06-11T11:00:00.000Z",
+    projectId: "p-design-system",
+  },
+  {
+    id: "ds-1",
+    actorId: "u-manager-3",
+    action: "created project",
+    subject: "Design System v2",
+    timestamp: "2026-06-10T10:00:00.000Z",
+    projectId: "p-design-system",
+  },
+
+  // --- General / Workspace Activities ---
   {
     id: "a-1",
     actorId: "u-manager-1",
     action: "moved",
     subject: "Project filters to review",
     timestamp: "2026-06-22T08:30:00.000Z",
+    projectId: "p-command-center",
   },
   {
     id: "a-2",
@@ -21,6 +122,7 @@ export const activity: Activity[] = [
     action: "attached research to",
     subject: "Onboarding checklist",
     timestamp: "2026-06-21T16:15:00.000Z",
+    projectId: "p-onboarding",
   },
   {
     id: "a-3",
@@ -28,6 +130,7 @@ export const activity: Activity[] = [
     action: "approved",
     subject: "Quarterly reporting hub",
     timestamp: "2026-06-20T11:05:00.000Z",
+    projectId: "p-reporting",
   },
   {
     id: "a-4",
@@ -35,6 +138,7 @@ export const activity: Activity[] = [
     action: "completed",
     subject: "Glassmorphism card variants",
     timestamp: "2026-06-20T09:42:00.000Z",
+    projectId: "p-design-system",
   },
   {
     id: "a-5",
@@ -42,6 +146,7 @@ export const activity: Activity[] = [
     action: "created project",
     subject: "Dashboard Redesign",
     timestamp: "2026-06-19T14:30:00.000Z",
+    projectId: "p-dashboard-v2",
   },
   {
     id: "a-6",
@@ -49,6 +154,7 @@ export const activity: Activity[] = [
     action: "started",
     subject: "Rate limiter implementation",
     timestamp: "2026-06-19T10:15:00.000Z",
+    projectId: "p-api-gateway",
   },
   {
     id: "a-7",
@@ -56,6 +162,7 @@ export const activity: Activity[] = [
     action: "assigned",
     subject: "CI pipeline integration to backlog",
     timestamp: "2026-06-18T16:00:00.000Z",
+    projectId: "p-test-automation",
   },
   {
     id: "a-8",
@@ -63,6 +170,7 @@ export const activity: Activity[] = [
     action: "deployed",
     subject: "Alert notification system",
     timestamp: "2026-06-18T11:30:00.000Z",
+    projectId: "p-monitoring",
   },
 ];
 
