@@ -198,6 +198,29 @@ export function TeamsSection() {
 
   if (!currentUser) return null;
 
+  if (currentUser.role === "employee") {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center p-8 bg-white border border-slate-200 rounded-2xl shadow-2xs">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-50 border border-red-100 text-red-600 mb-4">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        </div>
+        <h3 className="text-base font-extrabold text-slate-900 leading-tight">Access Restricted</h3>
+        <p className="text-xs text-slate-500 max-w-sm mt-2 leading-relaxed">
+          The Teams section is restricted to Administrators and Managers. Please contact your manager if you require access.
+        </p>
+        <Link
+          href="/"
+          className="mt-5 px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-full transition cursor-pointer"
+        >
+          Return to Dashboard
+        </Link>
+      </div>
+    );
+  }
+
   const isAdmin = currentUser.role === "admin";
   const isManager = currentUser.role === "manager";
 

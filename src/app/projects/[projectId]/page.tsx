@@ -1,6 +1,6 @@
 "use client";
 
-import { useProjectStore, useEmployeeStore } from "@/src/store";
+import { useProjectStore, useEmployeeStore, useAuthStore, useTaskStore } from "@/src/store";
 import { AppShell } from "@/src/components/common/app-shell";
 import { notFound } from "next/navigation";
 import { Add } from "iconsax-react";
@@ -10,6 +10,7 @@ import { ProjectListTab } from "@/src/components/projects/project-list-tab";
 import { ProjectActivityTab } from "@/src/components/projects/project-activity-tab";
 import { ProjectFilesTab } from "@/src/components/projects/project-files-tab";
 import { ProjectCalendarTab } from "@/src/components/projects/project-calendar-tab";
+import { EmptyState } from "@/src/components/ui/empty-state";
 
 type TabOption = "board" | "list" | "calendar" | "activity" | "files";
 
@@ -21,11 +22,30 @@ export default function ProjectDetailPage({
   const unwrappedParams = use(params);
   const project = useProjectStore((s) => s.getProjectById(unwrappedParams.projectId));
   const getUsersByTeam = useEmployeeStore((s) => s.getUsersByTeam);
+  const { currentUser } = useAuthStore();
+  const allTasks = useTaskStore((s) => s.getAllTasks());
 
   const [activeTab, setActiveTab] = useState<TabOption>("board");
 
   if (!project) {
     notFound();
+  }
+
+  // Block employees not assigned to any tasks in this project
+  const isAssigned = allTasks.some(
+    (t) => t.projectId === project.id && t.assigneeId === currentUser?.id
+  );
+  if (currentUser?.role === "employee" && !isAssigned) {
+    return (
+      <AppShell>
+        <div className="flex flex-col items-center justify-center min-h-[50vh] p-6">
+          <EmptyState
+            title="Access restricted"
+            message="You are not assigned to this project."
+          />
+        </div>
+      </AppShell>
+    );
   }
 
   const teamMembers = getUsersByTeam(project.teamId);

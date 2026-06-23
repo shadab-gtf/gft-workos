@@ -5,7 +5,7 @@ import { SearchNormal1, Grid5, RowVertical } from "iconsax-react";
 import { EmptyState } from "@/src/components/ui/empty-state";
 import { ProjectsGrid } from "@/src/components/ui/projects-grid";
 import { ProjectList } from "@/src/components/ui/project-list";
-import { useAuthStore, useProjectStore, useEmployeeStore, useTeamStore } from "@/src/store";
+import { useAuthStore, useProjectStore, useEmployeeStore, useTeamStore, useTaskStore } from "@/src/store";
 
 export function ProjectsSection() {
   const [view, setView] = useState<"grid" | "list">("grid");
@@ -15,14 +15,20 @@ export function ProjectsSection() {
   const allProjects = useProjectStore((s) => s.getAllProjects());
   const allTeams = useTeamStore((s) => s.getAllTeams());
   const allUsers = useEmployeeStore((s) => s.getAllUsers());
+  const allTasks = useTaskStore((s) => s.getAllTasks());
 
   const permissions = currentUser?.role === "admin" || currentUser?.role === "manager"
     ? { canViewAll: true }
     : { canViewAll: false };
 
-  let projects = permissions.canViewAll
-    ? allProjects
-    : allProjects.filter((p) => p.ownerId === currentUser?.id || p.teamId === currentUser?.teamId);
+  let projects = allProjects;
+  if (currentUser?.role === "employee") {
+    projects = allProjects.filter((p) =>
+      allTasks.some((t) => t.projectId === p.id && t.assigneeId === currentUser.id)
+    );
+  } else if (!permissions.canViewAll) {
+    projects = allProjects.filter((p) => p.ownerId === currentUser?.id || p.teamId === currentUser?.teamId);
+  }
 
   if (query.trim()) {
     const normalizedQuery = query.toLowerCase();

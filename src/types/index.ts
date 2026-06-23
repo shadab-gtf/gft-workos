@@ -178,4 +178,5 @@ export interface Permissions {
   canViewSettings: boolean;
   canEditSettings: boolean;
   canCreateDailyReport: boolean;
+  canViewTeams: boolean;
 }

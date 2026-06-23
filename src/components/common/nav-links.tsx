@@ -22,7 +22,7 @@ const allNavItems: Array<{ href: string; label: string; icon: Icon; permission?:
   { href: "/tasks", label: "Tasks", icon: Kanban },
   { href: "/daily-report", label: "Daily Report", icon: CalendarTick, permission: "canCreateDailyReport" },
   { href: "/calendar", label: "Calendar", icon: CalendarTick },
-  { href: "/teams", label: "Teams", icon: Profile2User },
+  { href: "/teams", label: "Teams", icon: Profile2User, permission: "canViewTeams" },
   { href: "/employees", label: "Employees", icon: People, permission: "canManageEmployees" },
   { href: "/analytics", label: "Analytics", icon: Chart2, permission: "canViewCompanyAnalytics" },
   { href: "/settings", label: "Settings", icon: Setting2 },

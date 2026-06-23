@@ -18,10 +18,13 @@ import {
 import { SearchService } from "@/src/services/search.service";
 import type { SearchResult } from "@/src/services/search.service";
 import { usePermissions } from "@/src/hooks/use-permission";
+import { useAuthStore, useTaskStore } from "@/src/store";
 
 export function GlobalSearch() {
   const router = useRouter();
   const permissions = usePermissions();
+  const { currentUser } = useAuthStore();
+  const allTasks = useTaskStore((s) => s.getAllTasks());
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -33,13 +36,24 @@ export function GlobalSearch() {
     { href: "/projects", label: "Projects", icon: TaskSquare },
     { href: "/tasks", label: "Tasks", icon: Kanban },
     { href: "/calendar", label: "Calendar", icon: CalendarTick },
-    { href: "/teams", label: "Teams", icon: Profile2User },
+    { href: "/teams", label: "Teams", icon: Profile2User, show: permissions.canViewTeams },
     { href: "/employees", label: "Employees", icon: People, show: permissions.canManageEmployees },
     { href: "/analytics", label: "Analytics", icon: Chart2, show: permissions.canViewCompanyAnalytics },
     { href: "/settings", label: "Settings", icon: Setting2 },
   ].filter((item) => item.show !== false);
 
-  const results = SearchService.search(query);
+  const results = SearchService.search(query).filter((r) => {
+    if (r.type === "team" && !permissions.canViewTeams) return false;
+    if (currentUser?.role === "employee") {
+      if (r.type === "project") {
+        return allTasks.some((t) => t.projectId === r.id && t.assigneeId === currentUser.id);
+      }
+      if (r.type === "task") {
+        return allTasks.some((t) => t.id === r.id && t.assigneeId === currentUser.id);
+      }
+    }
+    return true;
+  });
 
   const navigableItems = query
     ? results

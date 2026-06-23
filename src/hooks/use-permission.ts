@@ -22,6 +22,7 @@ const PERMISSION_MAP: Record<UserRole, Permissions> = {
     canViewSettings: true,
     canEditSettings: true,
     canCreateDailyReport: true,
+    canViewTeams: true,
   },
   manager: {
     canCreateTeam: false,
@@ -42,6 +43,7 @@ const PERMISSION_MAP: Record<UserRole, Permissions> = {
     canViewSettings: true,
     canEditSettings: false,
     canCreateDailyReport: true,
+    canViewTeams: true,
   },
   employee: {
     canCreateTeam: false,
@@ -62,6 +64,7 @@ const PERMISSION_MAP: Record<UserRole, Permissions> = {
     canViewSettings: true,
     canEditSettings: false,
     canCreateDailyReport: true,
+    canViewTeams: false,
   },
 };
 
