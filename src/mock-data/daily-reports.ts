@@ -1,0 +1,128 @@
+import type { DailyReport } from "@/src/types";
+
+export const dailyReports: DailyReport[] = [
+  {
+    id: "dr-1",
+    employeeId: "u-employee-1",
+    managerId: "u-manager-1",
+    date: "2026-06-22",
+    taskLogs: [
+      {
+        id: "tl-1",
+        description: "Work on API Gateway migration",
+        category: "Development",
+        priority: "high",
+        status: "completed",
+        timeSpent: "4h 0m",
+        expectedDate: "2026-06-22",
+        notes: "Completed initial setup and basic routing.",
+      },
+      {
+        id: "tl-2",
+        description: "Review pull requests",
+        category: "Code Review",
+        priority: "medium",
+        status: "in-progress",
+        timeSpent: "1h 30m",
+        expectedDate: "2026-06-23",
+        notes: "Reviewed two PRs, provided feedback.",
+      },
+    ],
+    meetingCalls: [
+      {
+        id: "mc-1",
+        subject: "Daily Standup",
+        withWhom: "Platform Team",
+        time: "09:00 AM",
+        duration: "30m",
+        type: "standup",
+      },
+      {
+        id: "mc-2",
+        subject: "API Design Review",
+        withWhom: "Manager 1, Employee 4",
+        time: "02:00 PM",
+        duration: "1h 0m",
+        type: "review",
+      },
+    ],
+    endOfDayNotes: {
+      pending: "Further testing on API Gateway endpoints.",
+      challenges: "Some unexpected issues with legacy service integration.",
+      planForTomorrow: "Address integration issues, continue PR reviews.",
+    },
+    status: "submitted",
+  },
+  {
+    id: "dr-2",
+    employeeId: "u-employee-5",
+    managerId: "u-manager-2",
+    date: "2026-06-22",
+    taskLogs: [
+      {
+        id: "tl-3",
+        description: "Design new user onboarding flow",
+        category: "Design",
+        priority: "high",
+        status: "in-progress",
+        timeSpent: "5h 0m",
+        expectedDate: "2026-06-24",
+        notes: "Created wireframes for the first three steps.",
+      },
+    ],
+    endOfDayNotes: {
+      pending: "Complete remaining wireframes.",
+      challenges: "Aligning with marketing on messaging.",
+      planForTomorrow: "Finalize wireframes, schedule meeting with marketing.",
+    },
+    status: "submitted",
+  },
+  {
+    id: "dr-3",
+    employeeId: "u-employee-1",
+    managerId: "u-manager-1",
+    date: "2026-06-23",
+    taskLogs: [
+      {
+        id: "tl-4",
+        description: "Fix bug in user profile update",
+        category: "Bug Fix",
+        priority: "urgent",
+        status: "completed",
+        timeSpent: "2h 0m",
+        expectedDate: "2026-06-23",
+        notes: "Identified root cause and deployed fix to staging.",
+      },
+    ],
+    endOfDayNotes: {
+      pending: "Monitor staging environment for profile update bug.",
+      challenges: "Intermittent issue, difficult to reproduce initially.",
+      planForTomorrow: "Begin work on new feature X.",
+    },
+    status: "draft",
+  },
+  {
+    id: "dr-4",
+    employeeId: "u-employee-3",
+    managerId: "u-manager-4",
+    date: "2026-06-23",
+    taskLogs: [
+      {
+        id: "tl-5",
+        description: "Automated test suite expansion",
+        category: "QA",
+        priority: "medium",
+        status: "in-progress",
+        timeSpent: "3h 0m",
+        expectedDate: "2026-06-25",
+        notes: "Added new test cases for login module.",
+      },
+    ],
+    endOfDayNotes: {
+      pending: "Integrate new test cases into CI/CD pipeline.",
+      challenges: "Environment setup for new test framework.",
+      planForTomorrow: "Troubleshoot CI/CD integration.",
+    },
+    status: "missing",
+  },
+];
