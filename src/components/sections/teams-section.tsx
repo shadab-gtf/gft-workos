@@ -84,7 +84,7 @@ const getDeptColorClasses = (dept: string) => {
     return {
       border: "border-t-pink-500",
       text: "text-pink-700",
-      bg: "bg-pink-50/50", gg
+      bg: "bg-pink-50/50",
       gradient: "from-pink-500 to-rose-500",
       ring: "ring-pink-500/20",
     };
