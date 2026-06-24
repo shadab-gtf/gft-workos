@@ -19,6 +19,11 @@ export interface User {
   department?: string;
   canCreateTeam?: boolean;
   createdBy?: string;
+  workingDaysPerWeek?: number;
+  designation?: string;
+  reportingManager?: string;
+  reportingManagerEmail?: string;
+  mobileNumber?: string;
 }
 
 export interface Team {
@@ -131,6 +136,7 @@ export interface DailyReport {
 
 export interface TaskLogEntry {
   id: string;
+  title?: string;
   description: string;
   category: string;
   priority: Priority;

@@ -166,7 +166,11 @@ export const TeamsService = {
     const teamId = `t-${Date.now()}`;
     const initialMemberIds = Array.from(new Set([data.leadId, ...(data.memberIds || [])]));
 
+    const leadUser = useEmployeeStore.getState().getUserById(data.leadId);
+    const workingDays = leadUser?.workingDaysPerWeek || (data.type?.toLowerCase() === "sales" ? 6 : 5);
+
     const newTeam: Team = {
+      workingDaysPerWeek: workingDays,
       id: teamId,
       name: data.name.trim(),
       leadId: data.leadId,

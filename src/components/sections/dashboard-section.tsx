@@ -6,7 +6,7 @@ import { Card, CardHeader } from "@/src/components/ui/card";
 import { StatsGrid } from "@/src/components/ui/stats-grid";
 import { ProjectList } from "@/src/components/ui/project-list";
 import { KanbanBoard } from "@/src/components/ui/kanban-board";
-import { useAuthStore, useProjectStore, useTeamStore, useEmployeeStore, useTaskStore, useActivityStore } from "@/src/store";
+import { useAuthStore, useProjectStore, useTeamStore, useEmployeeStore, useTaskStore, useActivityStore, useDailyReportStore } from "@/src/store";
 import { analytics, dashboardStats } from "@/src/mock-data/analytics";
 import { EmptyState } from "@/src/components/ui/empty-state";
 
@@ -77,8 +77,49 @@ export function DashboardSection() {
   const myTasks = allTasks.filter((t) => t.assigneeId === currentUser.id);
   const myProjects = allProjects.filter((p) => myTasks.some((t) => t.projectId === p.id));
 
+  const myReports = useDailyReportStore.getState().getReportsByEmployeeId(currentUser.id);
+  const submittedCount = myReports.filter((r) => r.status === "submitted").length;
+
+  const getMissingCount = () => {
+    let missing = 0;
+    const anchorDate = new Date("2026-06-23");
+    for (let i = 0; i < 15; i++) {
+      const d = new Date(anchorDate);
+      d.setDate(anchorDate.getDate() - i);
+      const dateString = d.toISOString().split("T")[0];
+      const dayOfWeek = d.getDay();
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+      if (!isWeekend && !myReports.some((r) => r.date === dateString)) {
+        missing++;
+      }
+    }
+    return missing;
+  };
+
+  const missingCount = getMissingCount();
+
   return (
     <div className="space-y-6">
+      {/* Employee Personal stats cards */}
+      <div className="grid gap-4 sm:grid-cols-4">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-2xs flex flex-col justify-center">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Submitted Reports</span>
+          <span className="text-2xl font-extrabold text-slate-900 mt-1">{submittedCount}</span>
+        </div>
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-2xs flex flex-col justify-center">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Missing Reports</span>
+          <span className="text-2xl font-extrabold text-slate-900 mt-1">{missingCount}</span>
+        </div>
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-2xs flex flex-col justify-center">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Avg Performance</span>
+          <span className="text-2xl font-extrabold text-emerald-600 mt-1">{currentUser.performance}%</span>
+        </div>
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-2xs flex flex-col justify-center">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Avg Utilization</span>
+          <span className="text-2xl font-extrabold text-primary-600 mt-1">{currentUser.utilization}%</span>
+        </div>
+      </div>
+
       <Card>
         <CardHeader title="My Active Tasks" />
         <div className="p-5">

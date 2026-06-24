@@ -10,23 +10,60 @@ interface AuthState {
   setCurrentUser: (user: User) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  currentUser: null,
-  isAuthenticated: false,
+export const useAuthStore = create<AuthState>((set, get) => {
+  // Load persisted auth state from localStorage if present
+  let persisted: { currentUser: User | null; isAuthenticated: boolean } | undefined;
+  try {
+    const stored = localStorage.getItem("auth-store");
+    if (stored) persisted = JSON.parse(stored);
+  } catch (e) {
+    // ignore errors
+  }
 
-  login: (user) =>
-    set({ currentUser: user, isAuthenticated: true }),
+  return {
+    currentUser: persisted?.currentUser ?? null,
+    isAuthenticated: persisted?.isAuthenticated ?? false,
 
-  logout: () =>
-    set({ currentUser: null, isAuthenticated: false }),
+    login: (user) => {
+      set({ currentUser: user, isAuthenticated: true });
+      try {
+        localStorage.setItem(
+          "auth-store",
+          JSON.stringify({ currentUser: user, isAuthenticated: true })
+        );
+      } catch (e) {}
+    },
 
-  switchRole: (role, allUsers) => {
-    const userForRole = allUsers.find((u) => u.role === role);
-    if (userForRole) {
-      set({ currentUser: userForRole, isAuthenticated: true });
-    }
-  },
+    logout: () => {
+      set({ currentUser: null, isAuthenticated: false });
+      try {
+        localStorage.removeItem("auth-store");
+      } catch (e) {}
+    },
 
-  setCurrentUser: (user) =>
-    set({ currentUser: user }),
-}));
+    switchRole: (role, allUsers) => {
+      const userForRole = allUsers.find((u) => u.role === role);
+      if (userForRole) {
+        set({ currentUser: userForRole, isAuthenticated: true });
+        try {
+          localStorage.setItem(
+            "auth-store",
+            JSON.stringify({ currentUser: userForRole, isAuthenticated: true })
+          );
+        } catch (e) {}
+      }
+    },
+
+    setCurrentUser: (user) => {
+      set({ currentUser: user });
+      try {
+        const existing = localStorage.getItem("auth-store");
+        const data = existing ? JSON.parse(existing) : {};
+        localStorage.setItem(
+          "auth-store",
+          JSON.stringify({ ...data, currentUser: user })
+        );
+      } catch (e) {}
+    },
+  };
+});

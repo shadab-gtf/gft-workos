@@ -10,72 +10,28 @@ import { useAuthStore, useTeamStore, useEmployeeStore, useProjectStore, useTaskS
 import { TeamsService } from "@/src/services/teams.service";
 import type { User, Team, Project } from "@/src/types";
 import { titleCase } from "@/src/lib/utils/format";
-import { DropdownMenu, DropdownItem, DropdownDivider } from "@/src/components/ui/dropdown-menu";
-import { People, InfoCircle } from "iconsax-react";
+import { People, InfoCircle, VolumeHigh, Edit2, Chart, Command, Headphone, Designtools } from "iconsax-react";
 
 // Helper for rendering custom SVGs for team icons
-const getIconSvg = (name?: string) => {
+const getIconSvg = (name?: string, isActive?: boolean) => {
+  const color = isActive === undefined ? "currentColor" : (isActive ? "#2563eb" : "#90a1b9");
+  const size = 20;
+
   switch (name) {
     case "megaphone":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <path d="M11 5L6 9H2v6h4l5 4V5z" />
-          <path d="M23 9c0 2.1-1 3.9-2.5 5M20.5 7.5c0 1.2-.6 2.3-1.5 3" />
-        </svg>
-      );
+      return <VolumeHigh size={size} color={color} variant="Outline" />;
     case "pen":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <path d="M12 20h9" />
-          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-        </svg>
-      );
+      return <Edit2 size={size} color={color} variant="Outline" />;
     case "chart":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <line x1="18" y1="20" x2="18" y2="10" />
-          <line x1="12" y1="20" x2="12" y2="4" />
-          <line x1="6" y1="20" x2="6" y2="14" />
-        </svg>
-      );
+      return <Chart size={size} color={color} variant="Outline" />;
     case "node":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <circle cx="12" cy="12" r="3" />
-          <circle cx="6" cy="6" r="3" />
-          <circle cx="18" cy="6" r="3" />
-          <circle cx="18" cy="18" r="3" />
-          <circle cx="6" cy="18" r="3" />
-          <line x1="8.5" y1="8.5" x2="9.5" y2="9.5" />
-          <line x1="15.5" y1="8.5" x2="14.5" y2="9.5" />
-          <line x1="8.5" y1="15.5" x2="9.5" y2="14.5" />
-          <line x1="15.5" y1="15.5" x2="14.5" y2="14.5" />
-        </svg>
-      );
+      return <Command size={size} color={color} variant="Outline" />;
     case "headset":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
-          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
-        </svg>
-      );
+      return <Headphone size={size} color={color} variant="Outline" />;
     case "rocket":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <path d="M4.5 16.5c-1.5 1.25-2.5 3.5-2.5 3.5s2.25-1 3.5-2.5" />
-          <path d="M12 2C6.5 2 2 6.5 2 12c0 1.2.2 2.4.6 3.5L7 11l4 4 4.5-4.4c1.1.4 2.3.6 3.5.6 5.5 0 10-4.5 10-10S17.5 2 12 2Z" />
-          <path d="M9 15l-3 3v2h2l3-3" />
-        </svg>
-      );
+      return <Designtools size={size} color={color} variant="Outline" />;
     default:
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-        </svg>
-      );
+      return <VolumeHigh size={size} color={color} variant="Outline" />;
   }
 };
 
@@ -128,7 +84,7 @@ const getDeptColorClasses = (dept: string) => {
     return {
       border: "border-t-pink-500",
       text: "text-pink-700",
-      bg: "bg-pink-50/50",
+      bg: "bg-pink-50/50", gg
       gradient: "from-pink-500 to-rose-500",
       ring: "ring-pink-500/20",
     };
@@ -256,7 +212,7 @@ export function TeamsSection() {
   const avgHealthScore = Math.round(
     visibleTeams.reduce((sum, t) => sum + t.health, 0) / (totalTeamsCount || 1)
   );
-  
+
   const allTeamTasks = visibleTeams.flatMap((t) => getTeamTasks(t.id));
   const totalTasksCount = allTeamTasks.length;
   const completedTasksCount = allTeamTasks.filter((t) => t.status === "completed").length;
@@ -267,8 +223,8 @@ export function TeamsSection() {
     if (!newTeamName.trim()) return;
 
     // Determine leadId: if manager and not editing, defaults to manager's id
-    const leadId = editingTeam 
-      ? newTeamLeadId 
+    const leadId = editingTeam
+      ? newTeamLeadId
       : (isManager ? currentUser.id : newTeamLeadId || managers[0]?.id);
 
     if (!leadId) return;
@@ -288,7 +244,7 @@ export function TeamsSection() {
 
       // Update teamId for the members
       const employeeStore = useEmployeeStore.getState();
-      
+
       const oldMembers = editingTeam.memberIds;
       const newMembers = Array.from(new Set([leadId, ...selectedMembers]));
       const removedMembers = oldMembers.filter(mId => !newMembers.includes(mId));
@@ -306,7 +262,7 @@ export function TeamsSection() {
           employeeStore.updateUser(mId, { teamId: editingTeam.id });
         }
       });
-      
+
     } else {
       // Perform create
       TeamsService.createTeam({
@@ -414,11 +370,10 @@ export function TeamsSection() {
                   onClick={() => {
                     setSelectedProject(p);
                   }}
-                  className={`w-full text-left rounded-xl p-3 text-xs transition duration-150 flex flex-col gap-1.5 cursor-pointer border ${
-                    selectedProject?.id === p.id
-                      ? "bg-white border-primary-200 text-primary-950 font-semibold shadow-xs ring-2 ring-primary-500/5"
-                      : "bg-transparent border-transparent text-slate-600 hover:bg-slate-100"
-                  }`}
+                  className={`w-full text-left rounded-xl p-3 text-xs transition duration-150 flex flex-col gap-1.5 cursor-pointer border ${selectedProject?.id === p.id
+                    ? "bg-white border-primary-200 text-primary-950 font-semibold shadow-xs ring-2 ring-primary-500/5"
+                    : "bg-transparent border-transparent text-slate-600 hover:bg-slate-100"
+                    }`}
                 >
                   <span className="truncate w-full font-semibold">{p.name}</span>
                   <Badge
@@ -447,8 +402,8 @@ export function TeamsSection() {
                         selectedProject.status === "completed"
                           ? "success"
                           : selectedProject.status === "at-risk"
-                          ? "warning"
-                          : "info"
+                            ? "warning"
+                            : "info"
                       }
                     />
                   </div>
@@ -504,7 +459,7 @@ export function TeamsSection() {
   // Otherwise, render regular Teams / Managers tabbed dashboard
   return (
     <div className="space-y-6">
-      
+
       {/* Top Banner Header with Department Specific Title & Date Pill */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs gap-4 mb-6">
         <div>
@@ -512,13 +467,13 @@ export function TeamsSection() {
             {isManager ? `${departmentName} Space` : `${departmentName} Department`}
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            {isManager 
+            {isManager
               ? `Manage and monitor your team's velocity, tasks, and members`
               : `Overview of collaborative workspaces, cross-functional performance, and active tracks`
             }
           </p>
         </div>
-        
+
         <div className="flex items-center gap-3.5 flex-wrap">
           {/* Calendar date pill */}
           <div className="flex items-center gap-2.5 px-4 py-2 bg-slate-50 border border-slate-200/60 rounded-full text-slate-600 text-xs font-semibold shadow-2xs">
@@ -666,21 +621,19 @@ export function TeamsSection() {
           <div className="flex border-b border-transparent">
             <button
               onClick={() => setActiveTab("teams")}
-              className={`pb-3 px-4 text-sm font-semibold transition-all border-b-2 -mb-2.5 ${
-                activeTab === "teams"
-                  ? "border-primary-600 text-primary-600 font-bold"
-                  : "border-transparent text-slate-500 hover:text-slate-800"
-              }`}
+              className={`pb-3 px-4 text-sm font-semibold transition-all border-b-2 -mb-2.5 ${activeTab === "teams"
+                ? "border-primary-600 text-primary-600 font-bold"
+                : "border-transparent text-slate-500 hover:text-slate-800"
+                }`}
             >
               Teams ({visibleTeams.length})
             </button>
             <button
               onClick={() => setActiveTab("managers")}
-              className={`pb-3 px-4 text-sm font-semibold transition-all border-b-2 -mb-2.5 ${
-                activeTab === "managers"
-                  ? "border-primary-600 text-primary-600 font-bold"
-                  : "border-transparent text-slate-500 hover:text-slate-800"
-              }`}
+              className={`pb-3 px-4 text-sm font-semibold transition-all border-b-2 -mb-2.5 ${activeTab === "managers"
+                ? "border-primary-600 text-primary-600 font-bold"
+                : "border-transparent text-slate-500 hover:text-slate-800"
+                }`}
             >
               Managers ({managers.length})
             </button>
@@ -696,11 +649,10 @@ export function TeamsSection() {
           <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200 shadow-2xs self-end sm:self-auto">
             <button
               onClick={() => setViewMode("list")}
-              className={`p-2 rounded-lg transition-all flex items-center justify-center cursor-pointer ${
-                viewMode === "list"
-                  ? "bg-white text-slate-900 shadow-2xs"
-                  : "text-slate-400 hover:text-slate-600"
-              }`}
+              className={`p-2 rounded-lg transition-all flex items-center justify-center cursor-pointer ${viewMode === "list"
+                ? "bg-white text-slate-900 shadow-2xs"
+                : "text-slate-400 hover:text-slate-600"
+                }`}
               title="List View"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -714,11 +666,10 @@ export function TeamsSection() {
             </button>
             <button
               onClick={() => setViewMode("card")}
-              className={`p-2 rounded-lg transition-all flex items-center justify-center cursor-pointer ${
-                viewMode === "card"
-                  ? "bg-white text-slate-900 shadow-2xs"
-                  : "text-slate-400 hover:text-slate-600"
-              }`}
+              className={`p-2 rounded-lg transition-all flex items-center justify-center cursor-pointer ${viewMode === "card"
+                ? "bg-white text-slate-900 shadow-2xs"
+                : "text-slate-400 hover:text-slate-600"
+                }`}
               title="Grid Card View"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -769,13 +720,18 @@ export function TeamsSection() {
                 }
               };
 
+              const teamTasks = allTasks.filter((t) => teamProjects.some(p => p.id === t.projectId));
+              const totalTasks = teamTasks.length;
+              const completedTaskCount = teamTasks.filter(t => t.status === "completed").length;
+              const computedHealth = totalTasks > 0 ? Math.round((completedTaskCount / totalTasks) * 100) : 100;
+
               // Health color logic
               let healthColorClass = "bg-emerald-500";
               let healthTextClass = "text-emerald-700";
-              if (team.health < 50) {
+              if (computedHealth < 50) {
                 healthColorClass = "bg-rose-500";
                 healthTextClass = "text-rose-700";
-              } else if (team.health < 80) {
+              } else if (computedHealth < 80) {
                 healthColorClass = "bg-amber-500";
                 healthTextClass = "text-amber-700";
               }
@@ -802,18 +758,17 @@ export function TeamsSection() {
                   className="flex flex-col lg:flex-row items-start lg:items-center justify-between p-5 border border-slate-200/80 bg-white hover:border-slate-350 hover:shadow-xs rounded-2xl transition-all duration-205 gap-5 relative overflow-hidden"
                 >
                   {/* Priority indicator left bar */}
-                  <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${
-                    team.priority === "urgent" ? "bg-red-500" :
+                  <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${team.priority === "urgent" ? "bg-red-500" :
                     team.priority === "high" ? "bg-orange-500" :
-                    team.priority === "medium" ? "bg-blue-500" : "bg-slate-300"
-                  }`} />
+                      team.priority === "medium" ? "bg-blue-500" : "bg-slate-300"
+                    }`} />
 
                   {/* Left Column: Icon & Info */}
                   <div className="flex items-center gap-4 flex-1 min-w-0 pl-1.5">
                     <div className={`flex h-12 w-12 items-center justify-center rounded-xl border shrink-0 shadow-2xs ${getIconColorClasses(team.type)}`}>
                       {getIconSvg(team.icon)}
                     </div>
-                    
+
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <h4 className="text-sm font-extrabold text-slate-900 tracking-tight">{team.name}</h4>
@@ -833,7 +788,7 @@ export function TeamsSection() {
                           </span>
                         )}
                       </div>
-                      
+
                       <p className="text-xs text-slate-500 mt-1 line-clamp-1 max-w-lg leading-relaxed">
                         {team.description || "No description provided."}
                       </p>
@@ -846,13 +801,14 @@ export function TeamsSection() {
                     <div className="flex items-center">
                       <div className="flex -space-x-2.5 overflow-hidden">
                         {members.slice(0, 4).map((member) => (
-                          <span
+                          <Link
                             key={member.id}
-                            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-150 text-[10px] font-extrabold text-slate-700 ring-2 ring-white border border-slate-200/50"
-                            title={`${member.name} (${member.title})`}
+                            href={`/employees/${member.id}`}
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-150 text-[10px] font-extrabold text-slate-700 ring-2 ring-white border border-slate-200/50 hover:z-10 hover:-translate-y-0.5 transition-transform"
+                            title={`${member.name} - ${member.title}`}
                           >
                             {member.avatar}
-                          </span>
+                          </Link>
                         ))}
                         {members.length > 4 && (
                           <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-[9px] font-extrabold text-slate-800 ring-2 ring-white border border-slate-300">
@@ -887,10 +843,10 @@ export function TeamsSection() {
                     <div className="w-28 shrink-0">
                       <div className="flex justify-between items-center text-xs mb-1.5">
                         <span className="text-slate-400 font-medium">Health</span>
-                        <span className={`font-bold ${healthTextClass}`}>{team.health}%</span>
+                        <span className={`font-bold ${healthTextClass}`}>{computedHealth}%</span>
                       </div>
                       <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200/20">
-                        <div className={`h-full rounded-full transition-all duration-300 ${healthColorClass}`} style={{ width: `${team.health}%` }} />
+                        <div className={`h-full rounded-full transition-all duration-300 ${healthColorClass}`} style={{ width: `${computedHealth}%` }} />
                       </div>
                     </div>
                   </div>
@@ -903,51 +859,8 @@ export function TeamsSection() {
                     >
                       View Details
                     </button>
-                    
-                    {/* Three-dot dropdown menu */}
-                    {(isAdmin || team.leadId === currentUser.id) && (
-                      <DropdownMenu
-                        align="right"
-                        side="bottom"
-                        trigger={
-                          <button className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-600 transition cursor-pointer">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
-                              <circle cx="12" cy="12" r="1.5" />
-                              <circle cx="6" cy="12" r="1.5" />
-                              <circle cx="18" cy="12" r="1.5" />
-                            </svg>
-                          </button>
-                        }
-                      >
-                        <DropdownItem
-                          onClick={() => {
-                            setEditingTeam(team);
-                            setNewTeamName(team.name);
-                            setNewTeamDesc(team.description || "");
-                            setNewTeamType(team.type || "Engineering");
-                            setNewTeamIcon(team.icon || "megaphone");
-                            setNewTeamPriority(team.priority || "medium");
-                            setNewTeamGoals(team.goals || "");
-                            setSelectedMembers(team.memberIds.filter(id => id !== team.leadId));
-                            setNewTeamLeadId(team.leadId);
-                            setIsCreateTeamOpen(true);
-                          }}
-                        >
-                          Edit Team Settings
-                        </DropdownItem>
-                        <DropdownDivider />
-                        <DropdownItem
-                          danger
-                          onClick={() => {
-                            if (confirm(`Are you sure you want to delete the team "${team.name}"?`)) {
-                              useTeamStore.getState().deleteTeam(team.id);
-                            }
-                          }}
-                        >
-                          Delete Team
-                        </DropdownItem>
-                      </DropdownMenu>
-                    )}
+
+
                   </div>
                 </div>
               );
@@ -998,6 +911,7 @@ export function TeamsSection() {
               const teamProjects = allProjects.filter((p) => p.teamId === team.id);
               const ongoingCount = teamProjects.filter((p) => p.status !== "completed").length;
               const completedCount = teamProjects.filter((p) => p.status === "completed").length;
+              const members = allUsers.filter((u) => team.memberIds.includes(u.id));
 
               const handleOngoingClick = () => {
                 const leadUser = allUsers.find((u) => u.id === team.leadId);
@@ -1019,13 +933,18 @@ export function TeamsSection() {
                 }
               };
 
+              const teamTasks = allTasks.filter((t) => teamProjects.some(p => p.id === t.projectId));
+              const totalTasks = teamTasks.length;
+              const completedTaskCount = teamTasks.filter(t => t.status === "completed").length;
+              const computedHealth = totalTasks > 0 ? Math.round((completedTaskCount / totalTasks) * 100) : 100;
+
               // Health color logic
               let healthColorClass = "bg-emerald-500";
               let healthTextClass = "text-emerald-700";
-              if (team.health < 50) {
+              if (computedHealth < 50) {
                 healthColorClass = "bg-rose-500";
                 healthTextClass = "text-rose-700";
-              } else if (team.health < 80) {
+              } else if (computedHealth < 80) {
                 healthColorClass = "bg-amber-500";
                 healthTextClass = "text-amber-700";
               }
@@ -1033,12 +952,11 @@ export function TeamsSection() {
               return (
                 <Card key={team.id} className="transition-all hover:-translate-y-0.5 hover:shadow-md duration-200 relative overflow-hidden flex flex-col justify-between">
                   {/* Top priority highlight line */}
-                  <div className={`absolute top-0 left-0 right-0 h-1.5 ${
-                    team.priority === "urgent" ? "bg-red-500" :
+                  <div className={`absolute top-0 left-0 right-0 h-1.5 ${team.priority === "urgent" ? "bg-red-500" :
                     team.priority === "high" ? "bg-orange-500" :
-                    team.priority === "medium" ? "bg-blue-500" : "bg-slate-300"
-                  }`} />
-                  
+                      team.priority === "medium" ? "bg-blue-500" : "bg-slate-300"
+                    }`} />
+
                   <div className="p-5 flex-1 flex flex-col">
                     {/* Header: Icon and Title */}
                     <div className="flex items-start justify-between gap-3 mb-4">
@@ -1051,7 +969,7 @@ export function TeamsSection() {
                           <span className="text-[10px] font-semibold text-slate-400 mt-0.5 inline-block">{team.type || "General"}</span>
                         </div>
                       </div>
-                      
+
                       {/* Action buttons (View Details + Dropdown) */}
                       <div className="flex items-center gap-1">
                         <button
@@ -1060,50 +978,8 @@ export function TeamsSection() {
                         >
                           Details
                         </button>
-                        
-                        {(isAdmin || team.leadId === currentUser.id) && (
-                          <DropdownMenu
-                            align="right"
-                            side="bottom"
-                            trigger={
-                              <button className="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-600 transition cursor-pointer">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5">
-                                  <circle cx="12" cy="12" r="1.5" />
-                                  <circle cx="6" cy="12" r="1.5" />
-                                  <circle cx="18" cy="12" r="1.5" />
-                                </svg>
-                              </button>
-                            }
-                          >
-                            <DropdownItem
-                              onClick={() => {
-                                setEditingTeam(team);
-                                setNewTeamName(team.name);
-                                setNewTeamDesc(team.description || "");
-                                setNewTeamType(team.type || "Engineering");
-                                setNewTeamIcon(team.icon || "megaphone");
-                                setNewTeamPriority(team.priority || "medium");
-                                setNewTeamGoals(team.goals || "");
-                                setSelectedMembers(team.memberIds.filter(id => id !== team.leadId));
-                                setNewTeamLeadId(team.leadId);
-                                setIsCreateTeamOpen(true);
-                              }}
-                            >
-                              Edit Team
-                            </DropdownItem>
-                            <DropdownDivider />
-                            <DropdownItem
-                              danger
-                              onClick={() => {
-                                if (confirm(`Are you sure you want to delete the team "${team.name}"?`)) {
-                                  useTeamStore.getState().deleteTeam(team.id);
-                                }
-                              }}
-                            >
-                              Delete Team
-                            </DropdownItem>
-                          </DropdownMenu>
-                        )}
+
+
                       </div>
                     </div>
 
@@ -1129,9 +1005,25 @@ export function TeamsSection() {
 
                       {/* Bubble stack + clickable task counts */}
                       <div className="grid grid-cols-3 gap-2 border-t border-slate-100 pt-3">
-                        <div className="bg-slate-50 p-2 rounded-xl text-center flex flex-col justify-center border border-slate-200/10">
-                          <p className="text-[9px] font-bold uppercase text-slate-400">Members</p>
-                          <p className="text-sm font-extrabold text-slate-800 mt-0.5">{team.memberIds.length}</p>
+                        <div className="bg-slate-50 p-2 rounded-xl text-center flex flex-col items-center justify-center border border-slate-200/10">
+                          <p className="text-[9px] font-bold uppercase text-slate-400 mb-1">Members</p>
+                          <div className="flex -space-x-2 overflow-hidden">
+                            {members.slice(0, 2).map((member) => (
+                              <Link
+                                key={member.id}
+                                href={`/employees/${member.id}`}
+                                className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-150 text-[8px] font-extrabold text-slate-700 ring-2 ring-white border border-slate-200/50 hover:z-10 hover:-translate-y-0.5 transition-transform"
+                                title={`${member.name} - ${member.title}`}
+                              >
+                                {member.avatar}
+                              </Link>
+                            ))}
+                            {members.length > 2 && (
+                              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-[8px] font-extrabold text-slate-800 ring-2 ring-white border border-slate-300">
+                                +{members.length - 2}
+                              </span>
+                            )}
+                          </div>
                         </div>
 
                         <button
@@ -1155,10 +1047,10 @@ export function TeamsSection() {
                       <div className="border-t border-slate-100 pt-3">
                         <div className="mb-1.5 flex items-center justify-between text-xs">
                           <span className="text-slate-400 font-medium">Team Health</span>
-                          <span className={`font-bold ${healthTextClass}`}>{team.health}%</span>
+                          <span className={`font-bold ${healthTextClass}`}>{computedHealth}%</span>
                         </div>
                         <div className="h-1.5 rounded-full bg-slate-100 border border-slate-200/20 overflow-hidden">
-                          <div className={`h-full rounded-full transition-all duration-300 ${healthColorClass}`} style={{ width: `${team.health}%` }} />
+                          <div className={`h-full rounded-full transition-all duration-300 ${healthColorClass}`} style={{ width: `${computedHealth}%` }} />
                         </div>
                       </div>
                     </div>
@@ -1185,7 +1077,7 @@ export function TeamsSection() {
                 className="relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.01] flex flex-col justify-between border border-slate-200/80"
               >
                 {/* Modern colorful top glow header border */}
-                <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${deptThemes.gradient}`} />
+                <div className={`absolute top-0 left-0 right-0 h-1.5 bg-linear-to-r ${deptThemes.gradient}`} />
 
                 <div className="p-5 flex-1 flex flex-col">
                   {/* Profile Header Block */}
@@ -1201,11 +1093,6 @@ export function TeamsSection() {
                         </p>
                       </div>
                     </div>
-                    {manager.canCreateTeam && (
-                      <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[9px] font-bold leading-4 bg-primary-50 text-primary-700 border border-primary-100/50">
-                        Auth: Create Teams
-                      </span>
-                    )}
                   </div>
 
                   <p className="text-xs text-slate-400 mb-5 leading-normal">{manager.email}</p>
@@ -1257,16 +1144,16 @@ export function TeamsSection() {
       )}
 
       {/* Modal: Create or Edit Team */}
-      <Modal 
-        isOpen={isCreateTeamOpen} 
+      <Modal
+        isOpen={isCreateTeamOpen}
         onClose={() => {
           setIsCreateTeamOpen(false);
           setEditingTeam(null);
-        }} 
+        }}
         title={editingTeam ? `Edit Team Settings: ${editingTeam.name}` : "Create New Team Space"}
       >
         <form onSubmit={handleCreateTeamSubmit} className="space-y-4">
-          
+
           {/* Team Name */}
           <div>
             <label className="block text-xs font-bold leading-5 text-slate-700 mb-1">Team Name</label>
@@ -1351,15 +1238,14 @@ export function TeamsSection() {
                     key={i.name}
                     type="button"
                     onClick={() => setNewTeamIcon(i.name)}
-                    className={`flex flex-col items-center justify-center p-2 border.5 rounded-xl transition-all gap-1 cursor-pointer ${
-                      isSelected
-                        ? "bg-primary-50 border-primary-500 text-primary-700 ring-2 ring-primary-500/10 font-bold"
-                        : "border-slate-200 hover:border-slate-350 hover:bg-slate-50 text-slate-400"
-                    }`}
+                    className={`flex flex-col items-center justify-center p-2 border.5 rounded-xl transition-all gap-1 cursor-pointer ${isSelected
+                      ? "bg-primary-50 border-primary-500 text-primary-700 ring-2 ring-primary-500/10 font-bold"
+                      : "border-slate-200 hover:border-slate-350 hover:bg-slate-50 text-slate-400"
+                      }`}
                     title={i.label}
                   >
-                    <div className={isSelected ? "text-primary-600 scale-105 transition" : "text-slate-400"}>
-                      {getIconSvg(i.name)}
+                    <div className={isSelected ? "scale-105 transition" : ""}>
+                      {getIconSvg(i.name, isSelected)}
                     </div>
                   </button>
                 );
@@ -1378,17 +1264,16 @@ export function TeamsSection() {
                     key={p}
                     type="button"
                     onClick={() => setNewTeamPriority(p)}
-                    className={`flex-1 py-1.5 text-xs font-bold border rounded-lg transition-all capitalize cursor-pointer ${
-                      isSelected
-                        ? p === "urgent"
-                          ? "bg-red-50 border-red-400 text-red-700 ring-2 ring-red-500/5"
-                          : p === "high"
+                    className={`flex-1 py-1.5 text-xs font-bold border rounded-lg transition-all capitalize cursor-pointer ${isSelected
+                      ? p === "urgent"
+                        ? "bg-red-50 border-red-400 text-red-700 ring-2 ring-red-500/5"
+                        : p === "high"
                           ? "bg-orange-50 border-orange-400 text-orange-700 ring-2 ring-orange-500/5"
                           : p === "medium"
-                          ? "bg-blue-50 border-blue-400 text-blue-700 ring-2 ring-blue-500/5"
-                          : "bg-slate-100 border-slate-400 text-slate-700 ring-2 ring-slate-400/5"
-                        : "border-slate-200 hover:bg-slate-50 text-slate-500"
-                    }`}
+                            ? "bg-blue-50 border-blue-400 text-blue-700 ring-2 ring-blue-500/5"
+                            : "bg-slate-100 border-slate-400 text-slate-700 ring-2 ring-slate-400/5"
+                      : "border-slate-200 hover:bg-slate-50 text-slate-500"
+                      }`}
                   >
                     {p}
                   </button>
@@ -1571,12 +1456,11 @@ export function TeamsSection() {
                 </div>
               </div>
               <div className="flex flex-col items-end shrink-0 text-right gap-1">
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase tracking-wider ${
-                  selectedTeamForDetail.priority === "urgent" ? "bg-red-50 text-red-700 border-red-100" :
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase tracking-wider ${selectedTeamForDetail.priority === "urgent" ? "bg-red-50 text-red-700 border-red-100" :
                   selectedTeamForDetail.priority === "high" ? "bg-orange-50 text-orange-700 border-orange-100" :
-                  selectedTeamForDetail.priority === "medium" ? "bg-blue-50 text-blue-700 border-blue-100" :
-                  "bg-slate-50 text-slate-600 border-slate-100"
-                }`}>
+                    selectedTeamForDetail.priority === "medium" ? "bg-blue-50 text-blue-700 border-blue-100" :
+                      "bg-slate-50 text-slate-600 border-slate-100"
+                  }`}>
                   {selectedTeamForDetail.priority || "Medium"} Priority
                 </span>
                 <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">

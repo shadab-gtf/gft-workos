@@ -2,29 +2,61 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoginCurve, LogoutCurve, ArrowDown2, ArrowSquareRight, CloseSquare } from "iconsax-react";
 import type { ReactNode } from "react";
 import { NavLinks } from "@/src/components/common/nav-links";
-import { useAuthStore, useEmployeeStore } from "@/src/store";
-import { DropdownMenu, DropdownItem, DropdownDivider } from "@/src/components/ui/dropdown-menu";
+import { useAuthStore } from "@/src/store";
+import { DropdownMenu, DropdownItem } from "@/src/components/ui/dropdown-menu";
 import { titleCase } from "@/src/lib/utils/format";
-import type { UserRole } from "@/src/types";
+import { usePermissions } from "@/src/hooks/use-permission";
 import { Breadcrumbs } from "@/src/components/common/breadcrumbs";
 import { GlobalSearch } from "@/src/components/common/global-search";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const { currentUser, isAuthenticated, logout, switchRole } = useAuthStore();
-  const allUsers = useEmployeeStore((s) => s.getAllUsers());
+  const router = useRouter();
+  const permissions = usePermissions();
+  const { currentUser, isAuthenticated, logout } = useAuthStore();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const hasAccess = 
+    (pathname === "/settings" ? permissions.canViewSettings : true) &&
+    (pathname.startsWith("/teams") ? permissions.canViewTeams : true) &&
+    (pathname.startsWith("/daily-report") ? permissions.canCreateDailyReport : true) &&
+    (pathname.startsWith("/employees") ? (permissions.canManageEmployees || permissions.canViewTeams) : true);
 
   // Close mobile sidebar on route change
   useEffect(() => {
     setIsMobileOpen(false);
   }, [pathname]);
+
+  // Redirect unauthorized users
+  useEffect(() => {
+    if (isAuthenticated && !hasAccess) {
+      router.replace("/");
+    }
+  }, [isAuthenticated, hasAccess, router]);
+
+  if (!mounted) {
+    return null;
+  }
+
+  if (isAuthenticated && !hasAccess) {
+    return null;
+  }
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
 
   return (
     <motion.div 
@@ -160,14 +192,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   </button>
                 }
               >
-                <div className="px-4 py-2 text-xs font-semibold uppercase text-slate-500">Switch Role</div>
-                {(["admin", "manager", "employee"] as UserRole[]).map((role) => (
-                  <DropdownItem key={role} onClick={() => switchRole(role, allUsers)}>
-                    {role === currentUser.role ? "✓ " : ""}{titleCase(role)}
-                  </DropdownItem>
-                ))}
-                <DropdownDivider />
-                <DropdownItem onClick={logout} danger>
+                <DropdownItem onClick={handleLogout} danger>
                   Logout
                 </DropdownItem>
               </DropdownMenu>

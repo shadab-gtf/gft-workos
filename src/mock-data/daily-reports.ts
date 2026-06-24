@@ -1,14 +1,154 @@
 import type { DailyReport } from "@/src/types";
 
 export const dailyReports: DailyReport[] = [
+  // ── Neha Kapoor Reports (GTF-2210) ──────────────────────
   {
-    id: "dr-1",
-    employeeId: "u-employee-1",
+    id: "dr-neha-1",
+    employeeId: "GTF-2210",
+    managerId: "u-manager-1",
+    date: "2026-06-23",
+    taskLogs: [
+      {
+        id: "tl-neha-1",
+        title: "Task 1",
+        description: "Operations queue reconciliation and vendor follow-ups.",
+        category: "Operations",
+        priority: "high",
+        status: "completed",
+        timeSpent: "4.5h 0m",
+        expectedDate: "2026-06-23",
+        notes: "Cleared the backlog of vendor queries.",
+      },
+      {
+        id: "tl-neha-2",
+        title: "Task 2",
+        description: "Reviewing daily dispatch log error rates.",
+        category: "Operations",
+        priority: "medium",
+        status: "in-progress",
+        timeSpent: "3.0h 0m",
+        expectedDate: "2026-06-24",
+        notes: "Investigation ongoing.",
+      },
+    ],
+    meetingCalls: [
+      {
+        id: "mc-neha-1",
+        subject: "Vendor Coordination Call",
+        withWhom: "Alibaba Ops Team",
+        time: "11:00 AM",
+        duration: "30",
+        type: "call",
+      }
+    ],
+    endOfDayNotes: {
+      pending: "Process pending Alibaba invoices.",
+      challenges: "Delay in API updates from Alibaba dispatch.",
+      planForTomorrow: "Sync with logistics on Alibaba API.",
+    },
+    status: "submitted",
+  },
+  {
+    id: "dr-neha-2",
+    employeeId: "GTF-2210",
     managerId: "u-manager-1",
     date: "2026-06-22",
     taskLogs: [
       {
-        id: "tl-1",
+        id: "tl-neha-3",
+        title: "Daily Tasks",
+        description: "Daily dispatch verification and ticket processing.",
+        category: "Operations",
+        priority: "high",
+        status: "completed",
+        timeSpent: "8h 0m",
+        expectedDate: "2026-06-22",
+        notes: "No errors logged.",
+      },
+    ],
+    meetingCalls: [],
+    endOfDayNotes: {
+      pending: "None",
+      challenges: "None",
+      planForTomorrow: "Carry forward reconciliation.",
+    },
+    status: "submitted",
+  },
+
+  // ── Fatima Khan Reports (GTF-1980) ──────────────────────
+  {
+    id: "dr-fatima-1",
+    employeeId: "GTF-1980",
+    managerId: "u-manager-1",
+    date: "2026-06-23",
+    taskLogs: [
+      {
+        id: "tl-fatima-1",
+        title: "Task 1",
+        description: "Oversee operational workflow optimization",
+        category: "Operations",
+        priority: "medium",
+        status: "in-progress",
+        timeSpent: "5.5h 0m",
+        expectedDate: "2026-06-25",
+        notes: "Drafted workflow checklist.",
+      },
+    ],
+    meetingCalls: [
+      {
+        id: "mc-fatima-1",
+        subject: "Weekly Sync",
+        withWhom: "Operations Team",
+        time: "10:00 AM",
+        duration: "30",
+        type: "meeting",
+      }
+    ],
+    endOfDayNotes: {
+      pending: "Workflow checklist review.",
+      challenges: "Getting feedback from all stakeholders.",
+      planForTomorrow: "Finalize operations checklist.",
+    },
+    status: "submitted",
+  },
+
+  // ── Kuldeep Reports (GTF-1042) ──────────────────────────
+  {
+    id: "dr-kuldeep-1",
+    employeeId: "GTF-1042",
+    managerId: "u-manager-1",
+    date: "2026-06-23",
+    taskLogs: [
+      {
+        id: "tl-kuldeep-1",
+        title: "Task 1",
+        description: "Dispatch documentation mapping",
+        category: "Operations",
+        priority: "low",
+        status: "completed",
+        timeSpent: "6.0h 0m",
+        expectedDate: "2026-06-23",
+        notes: "Uploaded all logs.",
+      },
+    ],
+    endOfDayNotes: {
+      pending: "Scan pending packages list.",
+      challenges: "Scanner device battery issues.",
+      planForTomorrow: "Perform hardware health checks.",
+    },
+    status: "submitted",
+  },
+
+  // ── Standard Seeding for Other Employees ─────────────────
+  {
+    id: "dr-dev-1",
+    employeeId: "GTF-1005",
+    managerId: "u-manager-1",
+    date: "2026-06-22",
+    taskLogs: [
+      {
+        id: "tl-dev-1",
+        title: "Task 1",
         description: "Work on API Gateway migration",
         category: "Development",
         priority: "high",
@@ -18,7 +158,8 @@ export const dailyReports: DailyReport[] = [
         notes: "Completed initial setup and basic routing.",
       },
       {
-        id: "tl-2",
+        id: "tl-dev-2",
+        title: "Task 2",
         description: "Review pull requests",
         category: "Code Review",
         priority: "medium",
@@ -30,20 +171,12 @@ export const dailyReports: DailyReport[] = [
     ],
     meetingCalls: [
       {
-        id: "mc-1",
+        id: "mc-dev-1",
         subject: "Daily Standup",
         withWhom: "Platform Team",
         time: "09:00 AM",
-        duration: "30m",
+        duration: "30",
         type: "standup",
-      },
-      {
-        id: "mc-2",
-        subject: "API Design Review",
-        withWhom: "Manager 1, Employee 4",
-        time: "02:00 PM",
-        duration: "1h 0m",
-        type: "review",
       },
     ],
     endOfDayNotes: {
@@ -52,77 +185,5 @@ export const dailyReports: DailyReport[] = [
       planForTomorrow: "Address integration issues, continue PR reviews.",
     },
     status: "submitted",
-  },
-  {
-    id: "dr-2",
-    employeeId: "u-employee-5",
-    managerId: "u-manager-2",
-    date: "2026-06-22",
-    taskLogs: [
-      {
-        id: "tl-3",
-        description: "Design new user onboarding flow",
-        category: "Design",
-        priority: "high",
-        status: "in-progress",
-        timeSpent: "5h 0m",
-        expectedDate: "2026-06-24",
-        notes: "Created wireframes for the first three steps.",
-      },
-    ],
-    endOfDayNotes: {
-      pending: "Complete remaining wireframes.",
-      challenges: "Aligning with marketing on messaging.",
-      planForTomorrow: "Finalize wireframes, schedule meeting with marketing.",
-    },
-    status: "submitted",
-  },
-  {
-    id: "dr-3",
-    employeeId: "u-employee-1",
-    managerId: "u-manager-1",
-    date: "2026-06-23",
-    taskLogs: [
-      {
-        id: "tl-4",
-        description: "Fix bug in user profile update",
-        category: "Bug Fix",
-        priority: "urgent",
-        status: "completed",
-        timeSpent: "2h 0m",
-        expectedDate: "2026-06-23",
-        notes: "Identified root cause and deployed fix to staging.",
-      },
-    ],
-    endOfDayNotes: {
-      pending: "Monitor staging environment for profile update bug.",
-      challenges: "Intermittent issue, difficult to reproduce initially.",
-      planForTomorrow: "Begin work on new feature X.",
-    },
-    status: "draft",
-  },
-  {
-    id: "dr-4",
-    employeeId: "u-employee-3",
-    managerId: "u-manager-4",
-    date: "2026-06-23",
-    taskLogs: [
-      {
-        id: "tl-5",
-        description: "Automated test suite expansion",
-        category: "QA",
-        priority: "medium",
-        status: "in-progress",
-        timeSpent: "3h 0m",
-        expectedDate: "2026-06-25",
-        notes: "Added new test cases for login module.",
-      },
-    ],
-    endOfDayNotes: {
-      pending: "Integrate new test cases into CI/CD pipeline.",
-      challenges: "Environment setup for new test framework.",
-      planForTomorrow: "Troubleshoot CI/CD integration.",
-    },
-    status: "missing",
   },
 ];

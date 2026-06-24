@@ -14,6 +14,7 @@ export function EmployeesSection() {
 
   // Modal and Form States
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [email, setEmail] = useState("");
@@ -59,6 +60,18 @@ export function EmployeesSection() {
         return false;
       });
 
+  const filteredEmployees = visibleEmployees.filter((emp) => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return true;
+    return (
+      emp.name.toLowerCase().includes(q) ||
+      emp.id.toLowerCase().includes(q) ||
+      (emp.department || "").toLowerCase().includes(q) ||
+      emp.title.toLowerCase().includes(q) ||
+      emp.email.toLowerCase().includes(q)
+    );
+  });
+
   const handleCreateEmployeeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !title.trim()) return;
@@ -89,13 +102,11 @@ export function EmployeesSection() {
       {/* Header Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-4 gap-4">
         <div>
-          <h2 className="text-sm font-semibold text-slate-500">
-            {isAdmin ? "All Directory Profiles" : "Employees Under Your Management"}
+          <h2 className="text-xl font-bold text-slate-900">
+            My Team Directory
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            {isAdmin
-              ? "View and manage all company user profiles and credentials."
-              : `Viewing employees assigned to your teams (${visibleEmployees.length} profiles).`}
+          <p className="text-xs text-slate-500 mt-0.5">
+            Track employee reports, submission statistics, and history.
           </p>
         </div>
         <button
@@ -113,14 +124,30 @@ export function EmployeesSection() {
         </button>
       </div>
 
+      {/* Search Input Box */}
+      <div className="relative w-full max-w-md">
+        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="h-4 w-4">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.637 10.637Z" />
+          </svg>
+        </span>
+        <input
+          type="text"
+          placeholder="Search by name, ID, department..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full h-11 pl-10 pr-4 rounded-xl border border-slate-200 bg-white text-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition"
+        />
+      </div>
+
       {/* Employees Directory List Table */}
-      {visibleEmployees.length === 0 ? (
+      {filteredEmployees.length === 0 ? (
         <EmptyState
           title="No employees found"
-          message="Create a new employee profile to begin tracking their capacity and performance."
+          message="No employee profiles match your search criteria."
         />
       ) : (
-        <EmployeesTable users={visibleEmployees} />
+        <EmployeesTable users={filteredEmployees} />
       )}
 
       {/* Modal: Create Employee Profile */}

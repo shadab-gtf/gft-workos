@@ -73,39 +73,6 @@ Use only:
 Do not introduce alternative frameworks without approval.
 
 ---
-
-# Architecture Rules
-
-Use Feature-Based Architecture.
-
-Structure:
-
-src/
-├── app/
-├── components/
-├── features/
-├── hooks/
-├── layouts/
-├── store/
-├── services/
-├── types/
-├── utils/
-└── mock-data/
-
-Each feature must be self-contained.
-
-Example:
-
-features/
-└── projects/
-├── components/
-├── hooks/
-├── types/
-├── utils/
-└── mock-data/
-
----
-
 # State Management Rules
 
 Use Zustand.

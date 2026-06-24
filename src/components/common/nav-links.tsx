@@ -15,27 +15,50 @@ import {
   type Icon,
 } from "iconsax-react";
 import { usePermissions } from "@/src/hooks/use-permission";
-
-const allNavItems: Array<{ href: string; label: string; icon: Icon; permission?: keyof ReturnType<typeof usePermissions> }> = [
-  { href: "/", label: "Dashboard", icon: Element3 },
-  { href: "/projects", label: "Projects", icon: TaskSquare },
-  { href: "/tasks", label: "Tasks", icon: Kanban },
-  { href: "/daily-report", label: "Daily Report", icon: CalendarTick, permission: "canCreateDailyReport" },
-  { href: "/calendar", label: "Calendar", icon: CalendarTick },
-  { href: "/teams", label: "Teams", icon: Profile2User, permission: "canViewTeams" },
-  { href: "/employees", label: "Employees", icon: People, permission: "canManageEmployees" },
-  { href: "/analytics", label: "Analytics", icon: Chart2, permission: "canViewCompanyAnalytics" },
-  { href: "/settings", label: "Settings", icon: Setting2 },
-];
+import { useAuthStore } from "@/src/store";
+import { useMemo } from "react";
 
 export function NavLinks({ isCollapsed }: { isCollapsed?: boolean }) {
   const pathname = usePathname();
   const permissions = usePermissions();
+  const { currentUser } = useAuthStore();
 
-  const navItems = allNavItems.filter((item) => {
-    if (!item.permission) return true;
-    return permissions[item.permission];
-  });
+  const navItems = useMemo(() => {
+    const isEmployee = currentUser?.role === "employee";
+    const items = [
+      { href: "/", label: "Dashboard", icon: Element3 },
+      { href: "/projects", label: "Projects", icon: TaskSquare },
+      { href: "/tasks", label: "Tasks", icon: Kanban },
+    ];
+
+    if (isEmployee) {
+      items.push(
+        { href: "/daily-report", label: "Daily Report", icon: CalendarTick },
+        { href: "/reports", label: "My Reports", icon: Kanban }
+      );
+    } else {
+      items.push(
+        { href: "/reports", label: "Team Reports", icon: CalendarTick },
+        { href: "/employees", label: "Employees", icon: People }
+      );
+    }
+
+    items.push({ href: "/calendar", label: "Calendar", icon: CalendarTick });
+
+    if (permissions.canViewTeams) {
+      items.push({ href: "/teams", label: "Teams", icon: Profile2User });
+      if (currentUser?.role === "admin") { items.push({ href: "/admin/create-manager", label: "Create Manager", icon: Setting2 }); }
+    }
+    if (permissions.canViewCompanyAnalytics) {
+      items.push({ href: "/analytics", label: "Analytics", icon: Chart2 });
+    }
+    items.push({ href: "/profile", label: "Profile", icon: Profile2User });
+    if (permissions.canViewSettings) {
+      items.push({ href: "/settings", label: "Settings", icon: Setting2 });
+    }
+
+    return items;
+  }, [currentUser, permissions]);
 
   return (
     <nav className="mt-8 space-y-2" aria-label="Primary navigation">
@@ -49,9 +72,8 @@ export function NavLinks({ isCollapsed }: { isCollapsed?: boolean }) {
             href={item.href}
             aria-current={active ? "page" : undefined}
             title={isCollapsed ? item.label : undefined}
-            className={`group relative flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 ${
-              isCollapsed ? "justify-center p-3" : "gap-3 px-4 py-3"
-            } ${active ? "text-white" : "text-slate-600 hover:text-primary-700"}`}
+            className={`group relative flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 ${isCollapsed ? "justify-center p-3" : "gap-3 px-4 py-3"
+              } ${active ? "text-white" : "text-slate-600 hover:text-primary-700"}`}
           >
             {active ? (
               <motion.div
